@@ -5,10 +5,10 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activity.MainActivity">
+    tools:context=".ui.activity.MainActivity">
 
     <fragment
-        android:name="com.generlas.weatherapp.view.fragment.PlaceFragment"
+        android:name="com.generlas.weatherapp.ui.fragment.PlaceFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

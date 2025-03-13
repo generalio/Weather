@@ -1,7 +1,7 @@
-package com.generlas.weatherapp.repository.network
+package com.generlas.weatherapp.network
 
-import com.generlas.weatherapp.application.WeatherApplication
-import com.generlas.weatherapp.repository.model.PlaceResponse
+import com.generlas.weatherapp.utils.WeatherApplication
+import com.generlas.weatherapp.bean.PlaceResponse
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query

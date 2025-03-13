@@ -3,7 +3,6 @@ package com.generlas.weatherapp.utils
 import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.generlas.weatherapp.repository.network.WeatherNetwork
 
 /**
  * description ：Lifecycle
@@ -31,6 +30,6 @@ class MyObserver : DefaultLifecycleObserver {
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
-        WeatherNetwork.clearDisposable()
+        Log.d("zzx","(onDestroy:)-->>");
     }
 }

@@ -1,4 +1,4 @@
-package com.generlas.weatherapp.view.fragment
+package com.generlas.weatherapp.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -14,11 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.generlas.weatherapp.databinding.FragmentPlaceBinding
 import com.generlas.weatherapp.utils.MyObserver
-import com.generlas.weatherapp.view.activity.MainActivity
-import com.generlas.weatherapp.view.adapter.PlaceAdapter
+import com.generlas.weatherapp.ui.activity.MainActivity
+import com.generlas.weatherapp.ui.adapter.PlaceAdapter
+import com.generlas.weatherapp.viewmodel.PlaceViewModel
 
 /**
- * description ： TODO:类的作用
+ * description ： Place的fragment
  * date : 2025/3/13 14:38
  */
 class PlaceFragment : Fragment() {
@@ -70,7 +71,7 @@ class PlaceFragment : Fragment() {
 
         val mainActivity = activity as MainActivity
         viewModel.placeLiveData.observe(mainActivity) { places ->
-            if(places.isNotEmpty()) {
+            if(!places.isNullOrEmpty()) {
                 placeRecyclerView.visibility = View.VISIBLE
                 viewModel.placeList.clear()
                 viewModel.placeList.addAll(places)

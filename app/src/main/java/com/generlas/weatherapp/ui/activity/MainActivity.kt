@@ -1,4 +1,4 @@
-package com.generlas.weatherapp.view.activity
+package com.generlas.weatherapp.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

@@ -1,4 +1,4 @@
-package com.generlas.weatherapp.repository.model
+package com.generlas.weatherapp.bean
 
 import com.google.gson.annotations.SerializedName
 

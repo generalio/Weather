@@ -1,4 +1,4 @@
-package com.generlas.weatherapp.application
+package com.generlas.weatherapp.utils
 
 import android.annotation.SuppressLint
 import android.app.Application

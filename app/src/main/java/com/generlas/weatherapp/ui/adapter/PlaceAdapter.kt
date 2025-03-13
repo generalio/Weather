@@ -1,4 +1,4 @@
-package com.generlas.weatherapp.view.adapter
+package com.generlas.weatherapp.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.generlas.weatherapp.databinding.PlaceItemBinding
-import com.generlas.weatherapp.repository.model.Place
+import com.generlas.weatherapp.bean.Place
 
 /**
  * description ： place的Adapter
