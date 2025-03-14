@@ -10,8 +10,12 @@ import io.reactivex.rxjava3.core.Observable
  */
 object WeatherNetwork {
 
-    val placeService = ServiceCreator.create<PlaceService>()
+    private val placeService = ServiceCreator.create<PlaceService>()
+    private val weatherService = ServiceCreator.create<WeatherService>()
 
     fun searchPlaces(query: String): Observable<PlaceResponse> = placeService.searchPlaces(query)
+
+    fun getDailyWeather(lng: String, lat: String) = weatherService.getDailyWeather(lng, lat)
+    fun getRealtimeWeather(lng: String, lat: String) = weatherService.getRealtimeWeather(lng, lat)
 
 }

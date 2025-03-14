@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.generlas.weatherapp.databinding.FragmentPlaceBinding
+import com.generlas.weatherapp.R
 import com.generlas.weatherapp.utils.MyObserver
 import com.generlas.weatherapp.ui.activity.MainActivity
 import com.generlas.weatherapp.ui.adapter.PlaceAdapter
@@ -24,9 +24,6 @@ import com.generlas.weatherapp.viewmodel.PlaceViewModel
  */
 class PlaceFragment : Fragment() {
 
-    private var _binding: FragmentPlaceBinding? = null
-    private val binding get() = _binding!!
-
     val viewModel by lazy { ViewModelProvider(this).get(PlaceViewModel::class) }
     private lateinit var placeAdapter: PlaceAdapter
     private lateinit var placeRecyclerView: RecyclerView
@@ -36,8 +33,7 @@ class PlaceFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentPlaceBinding.inflate(inflater, container, false)
-        return binding.root
+        return inflater.inflate(R.layout.fragment_place, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,18 +41,15 @@ class PlaceFragment : Fragment() {
 
         lifecycle.addObserver(MyObserver())
 
-        initView()
-        initEvent()
-    }
+        placeRecyclerView = view.findViewById(R.id.place_rv)
+        mEtSearch = view.findViewById(R.id.et_place_search)
 
-    fun initView() {
-        placeRecyclerView = binding.placeRv
-        mEtSearch = binding.etPlaceSearch
+        initEvent()
     }
 
     fun initEvent() {
         placeRecyclerView.layoutManager = LinearLayoutManager(activity)
-        placeAdapter = PlaceAdapter()
+        placeAdapter = PlaceAdapter(this)
         placeRecyclerView.adapter = placeAdapter
         placeAdapter.submitList(viewModel.placeList.toList())
 
@@ -81,10 +74,5 @@ class PlaceFragment : Fragment() {
                 Toast.makeText(mainActivity, "尚未找到该城市", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
