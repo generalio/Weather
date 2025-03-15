@@ -1,29 +1,36 @@
 package com.generlas.weatherapp.ui.activity
 
+import android.content.Context
 import android.database.sqlite.SQLiteBindOrColumnIndexOutOfRangeException
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
+import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.generlas.weatherapp.R
-import com.generlas.weatherapp.bean.Aqi
-import com.generlas.weatherapp.bean.DailyResponse
-import com.generlas.weatherapp.bean.Realtime
+import com.generlas.weatherapp.model.bean.Aqi
+import com.generlas.weatherapp.model.bean.DailyResponse
+import com.generlas.weatherapp.model.bean.Realtime
 import com.generlas.weatherapp.utils.getSky
 import com.generlas.weatherapp.viewmodel.PlaceViewModel
 import com.generlas.weatherapp.viewmodel.WeatherViewModel
@@ -34,6 +41,8 @@ import java.util.Locale
 class WeatherActivity : AppCompatActivity() {
 
     val viewModel by lazy { ViewModelProvider(this).get(WeatherViewModel::class.java) }
+
+    lateinit var drawerLayout: DrawerLayout
 
     lateinit var placeName: TextView
     lateinit var currentTemp: TextView
@@ -62,6 +71,31 @@ class WeatherActivity : AppCompatActivity() {
         }
         window.statusBarColor = Color.TRANSPARENT
 
+        val mBtnNav: Button = findViewById(R.id.navBtn)
+        drawerLayout = findViewById(R.id.drawerLayout)
+        mBtnNav.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+        drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                manager.hideSoftInputFromWindow(drawerView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS) //隐藏输入法
+            }
+
+            override fun onDrawerStateChanged(newState: Int) {
+
+            }
+
+        })
+
         if(viewModel.locationLng.isEmpty()) {
             viewModel.locationLng = intent.getStringExtra("location_lng") ?: ""
         }
@@ -87,6 +121,10 @@ class WeatherActivity : AppCompatActivity() {
             }
         }
 
+        refreshWeather()
+    }
+
+    fun refreshWeather() {
         viewModel.getDaily(viewModel.locationLng, viewModel.locationLat)
         viewModel.getRealtime(viewModel.locationLng, viewModel.locationLat)
     }

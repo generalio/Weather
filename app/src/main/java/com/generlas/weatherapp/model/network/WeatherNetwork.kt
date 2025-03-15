@@ -1,6 +1,6 @@
-package com.generlas.weatherapp.network
+package com.generlas.weatherapp.model.network
 
-import com.generlas.weatherapp.bean.PlaceResponse
+import com.generlas.weatherapp.model.bean.PlaceResponse
 import com.generlas.weatherapp.utils.ServiceCreator
 import io.reactivex.rxjava3.core.Observable
 

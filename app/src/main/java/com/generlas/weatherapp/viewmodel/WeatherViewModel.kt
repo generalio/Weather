@@ -3,9 +3,9 @@ package com.generlas.weatherapp.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.generlas.weatherapp.bean.DailyResponse
-import com.generlas.weatherapp.bean.Realtime
-import com.generlas.weatherapp.network.WeatherNetwork
+import com.generlas.weatherapp.model.bean.DailyResponse
+import com.generlas.weatherapp.model.bean.Realtime
+import com.generlas.weatherapp.model.network.WeatherNetwork
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers

@@ -3,8 +3,9 @@ package com.generlas.weatherapp.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.generlas.weatherapp.bean.Place
-import com.generlas.weatherapp.network.WeatherNetwork
+import com.generlas.weatherapp.model.bean.Place
+import com.generlas.weatherapp.model.dao.PlaceDao
+import com.generlas.weatherapp.model.network.WeatherNetwork
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -19,6 +20,10 @@ class PlaceViewModel : ViewModel() {
 
     val placeLiveData: MutableLiveData<List<Place>> = MutableLiveData()
     private val compositeDisposable = CompositeDisposable()
+
+    fun savePlace(place: Place) = PlaceDao.savePlace(place)
+    fun getSavedPlace() = PlaceDao.getSavedPlace()
+    fun isPlaceSaved() = PlaceDao.isPlaceSaved()
 
     fun searchPlaces(query: String) {
 

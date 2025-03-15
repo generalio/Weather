@@ -1,4 +1,4 @@
-package com.generlas.weatherapp.bean
+package com.generlas.weatherapp.model.bean
 
 /**  
 * description ： TODO:类的作用

@@ -1,4 +1,4 @@
-package com.generlas.weatherapp.bean
+package com.generlas.weatherapp.model.bean
 
 import com.google.gson.annotations.SerializedName
 import java.sql.Date

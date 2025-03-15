@@ -1,5 +1,6 @@
 package com.generlas.weatherapp.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.generlas.weatherapp.R
 import com.generlas.weatherapp.utils.MyObserver
 import com.generlas.weatherapp.ui.activity.MainActivity
+import com.generlas.weatherapp.ui.activity.WeatherActivity
 import com.generlas.weatherapp.ui.adapter.PlaceAdapter
+import com.generlas.weatherapp.utils.WeatherApplication
 import com.generlas.weatherapp.viewmodel.PlaceViewModel
 
 /**
@@ -38,6 +41,18 @@ class PlaceFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if(activity is MainActivity && viewModel.isPlaceSaved()) {
+            val place = viewModel.getSavedPlace()
+            val intent = Intent(context, WeatherActivity::class.java).apply {
+                putExtra("location_lng", place.location.lng)
+                putExtra("location_lat", place.location.lat)
+                putExtra("place_name", place.name)
+            }
+            startActivity(intent)
+            activity?.finish()
+            return
+        }
 
         lifecycle.addObserver(MyObserver())
 
@@ -62,8 +77,7 @@ class PlaceFragment : Fragment() {
             }
         }
 
-        val mainActivity = activity as MainActivity
-        viewModel.placeLiveData.observe(mainActivity) { places ->
+        viewModel.placeLiveData.observe(viewLifecycleOwner) { places ->
             if(!places.isNullOrEmpty()) {
                 placeRecyclerView.visibility = View.VISIBLE
                 viewModel.placeList.clear()
@@ -71,7 +85,7 @@ class PlaceFragment : Fragment() {
                 Log.d("zzx","(${places}:)-->>");
                 placeAdapter.submitList(places.toList())
             } else {
-                Toast.makeText(mainActivity, "尚未找到该城市", Toast.LENGTH_SHORT).show()
+                Toast.makeText(WeatherApplication.context, "尚未找到该城市", Toast.LENGTH_SHORT).show()
             }
         }
     }

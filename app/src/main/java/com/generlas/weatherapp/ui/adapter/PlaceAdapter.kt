@@ -11,15 +11,16 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.generlas.weatherapp.R
-import com.generlas.weatherapp.bean.Place
+import com.generlas.weatherapp.model.bean.Place
 import com.generlas.weatherapp.ui.activity.WeatherActivity
+import com.generlas.weatherapp.ui.fragment.PlaceFragment
 import com.generlas.weatherapp.utils.WeatherApplication
 
 /**
  * description ： place的Adapter
  * date : 2025/3/13 14:36
  */
-class PlaceAdapter(val fragment: Fragment): ListAdapter<Place, PlaceAdapter.ViewHolder>(object : DiffUtil.ItemCallback<Place>() {
+class PlaceAdapter(val fragment: PlaceFragment): ListAdapter<Place, PlaceAdapter.ViewHolder>(object : DiffUtil.ItemCallback<Place>() {
     override fun areContentsTheSame(oldItem: Place, newItem: Place): Boolean {
         return oldItem.location == newItem.location
     }
@@ -38,13 +39,25 @@ class PlaceAdapter(val fragment: Fragment): ListAdapter<Place, PlaceAdapter.View
             view.setOnClickListener {
                 val position = adapterPosition
                 val place = getItem(position)
-                val intent = Intent(WeatherApplication.context, WeatherActivity::class.java).apply {
-                    putExtra("location_lng", place.location.lng)
-                    putExtra("location_lat", place.location.lat)
-                    putExtra("place_name", place.name)
+                val activity = fragment.activity
+                if(activity is WeatherActivity) {
+                    activity.drawerLayout.closeDrawers()
+                    activity.viewModel.locationLng = place.location.lng
+                    activity.viewModel.locationLat = place.location.lat
+                    activity.viewModel.placeName = place.name
+                    activity.refreshWeather()
+                } else {
+                    val intent = Intent(WeatherApplication.context, WeatherActivity::class.java).apply {
+                        putExtra("location_lng", place.location.lng)
+                        putExtra("location_lat", place.location.lat)
+                        putExtra("place_name", place.name)
+                    }
+
+                    fragment.startActivity(intent)
+                    activity?.finish() //退出当前activity
                 }
-                fragment.startActivity(intent)
-                fragment.activity?.finish() //退出当前activity
+                fragment.viewModel.savePlace(place)
+
             }
         }
     }
