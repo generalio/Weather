@@ -27,6 +27,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.generlas.weatherapp.R
 import com.generlas.weatherapp.model.bean.Aqi
 import com.generlas.weatherapp.model.bean.DailyResponse
@@ -43,6 +44,7 @@ class WeatherActivity : AppCompatActivity() {
     val viewModel by lazy { ViewModelProvider(this).get(WeatherViewModel::class.java) }
 
     lateinit var drawerLayout: DrawerLayout
+    lateinit var swipeRefresh: SwipeRefreshLayout
 
     lateinit var placeName: TextView
     lateinit var currentTemp: TextView
@@ -72,6 +74,7 @@ class WeatherActivity : AppCompatActivity() {
         window.statusBarColor = Color.TRANSPARENT
 
         val mBtnNav: Button = findViewById(R.id.navBtn)
+        swipeRefresh = findViewById(R.id.swipeRefresh)
         drawerLayout = findViewById(R.id.drawerLayout)
         mBtnNav.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.START)
@@ -112,6 +115,7 @@ class WeatherActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "获取失败", Toast.LENGTH_SHORT).show()
             }
+            swipeRefresh.isRefreshing = false
         }
         viewModel.dailyLiveData.observe(this) {result ->
             if(result != null) {
@@ -119,14 +123,20 @@ class WeatherActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "获取失败", Toast.LENGTH_SHORT).show()
             }
+            swipeRefresh.isRefreshing = false
         }
 
+        swipeRefresh.setColorSchemeResources(R.color.colorPrimary)
         refreshWeather()
+        swipeRefresh.setOnRefreshListener {
+            refreshWeather()
+        }
     }
 
     fun refreshWeather() {
         viewModel.getDaily(viewModel.locationLng, viewModel.locationLat)
         viewModel.getRealtime(viewModel.locationLng, viewModel.locationLat)
+        swipeRefresh.isRefreshing = true
     }
 
     private fun showWeatherRealtime(realtime: Realtime) {
