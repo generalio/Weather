@@ -36,6 +36,34 @@ private val _livedata : MutableLiveData<>() = mutableLiveData() //创建不可�
 val livedata: LiveData<>() get() = _livedata //通过设置属性getter()方法来让不可变的livedata暴露给外部
 ```
 
+> Retrofit构造器的写法:
+>
+> ```kotlin
+> object ServiceCreator {
+> 
+>     private const val BASE_URL = "https://.../"
+> 
+>     private val retrofit = Retrofit.Builder()
+>         .baseUrl(BASE_URL)
+>         .addConverterFactory(GsonConverterFactory.create())
+>         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+>         .build()
+> 
+>     fun <T> create(serviceClass: Class<T>): T = retrofit.create(serviceClass)
+> 
+>     inline fun <reified T> create(): T = create(T::class.java)
+> 
+> }
+> ```
+>
+> 这里加入`inline`内联函数是因为JVM的泛型擦除，所以我们通过申明`reified`泛型，使得能够直接替换避免了被擦除。
+>
+> ```kotlin
+> private val weatherService = ServiceCreator.create<WeatherService>()
+> ```
+>
+> 而还需要第11行这行代码的原因是我们的`retrofit`是私有的，而`inline`是直接替换代码位置的，故这里不能直接写成`=retrofit.create(T::class.java)`，而是要通过第11行代码去拿到`retrofit.create(serviceClass)`的返回值。
+
 ## 总结
 
 第一行代码真的是本好书，跟着一步一步学还是能学到一点东西的。
